@@ -1,6 +1,6 @@
 #!/bin/bash
 install() {
-	echo sudo pacman -S "$1" # change this depending on your distro
+	pacman -S --noconfirm --needed "$1" # change this depending on your distro. Make sure that confirmation is not required!
 }
 
 DISPLAY=$(mktemp)
