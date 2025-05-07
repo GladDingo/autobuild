@@ -19,4 +19,4 @@ dialog --radiolist "Welcome to JAB! First, choose your display server.\nYou can 
 
 dialog --no-label "No, stay in tty" --yesno "The installation of your window manager and terminal is complete. Continue setup in the window manager?" 8 60 2> $XINSTALL
 
-[ $? = 0 ] && dwl || startx
+[ $? = 0 ] && dwl || [ !(command -v xinit) && startx ]
