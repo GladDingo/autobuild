@@ -28,7 +28,8 @@ dialog --radiolist "Welcome to JAB! First, choose your display server.\nYou can 
 
 [ $(<"$DISPLAY") = Wayland ] && \
 	(clear ; dialog --infobox 'Installing Wayland...' 4 40 ; install wayland ; \
-	dialog --infobox 'Installing dwl. This is a fast and lightweight window manager that is based on dwm, the X11 version.' 8 40; install dwl)
+	gitmakeinstall https://codeberg.org/dwl/dwl
+	# dialog --infobox 'Installing dwl. This is a fast and lightweight window manager that is based on dwm, the X11 version.' 8 40; install dwl)
 
 [ $(<"$DISPLAY") = X11 ] && \
 	(clear ; dialog --infobox 'Installing xorg-server...' 4 40 ; install xorg-server ; \
