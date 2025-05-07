@@ -13,10 +13,11 @@ dialog --radiolist "Welcome to JAB! First, choose your display server.\nYou can 
 	dialog --infobox 'Installing dwl. This is a fast and lightweight window manager that is based on dwm, the X11 version.' 8 40; install dwl)
 
 [ $(<"$DISPLAY") = X11 ] && \
-	(clear ; dialog --infobox 'Installing Xorg...' 4 40 ; install xorg ; \
-	dialog --infobox 'Installing dwm. This is a fast and lightweight window manager by suckless.' 8 40; install dwm ; \
-	dialog --infobox 'Installing st, which stands for simple terminal.')
+	(clear ; dialog --infobox 'Installing xorg-server...' 4 40 ; install xorg-server ; \
+	dialog --infobox 'Installing xorg-xinit...' 4 40 ; install xorg-xinit; \
+	dialog --infobox 'Installing dwm, a fast, lightweight, and extensible window manager by suckless...' 8 40; install dwm ; \
+	dialog --infobox 'Installing st, a "simple terminal" also made by suckless.')
 
 dialog --no-label "No, stay in tty" --yesno "The installation of your window manager and terminal is complete. Continue setup in the window manager?" 8 60 2> $XINSTALL
 
-[ $? = 0 ] && dwl || [ -z $(command -v xinit) && startx ]
+[ $? = 0 ] && dwl || startx
