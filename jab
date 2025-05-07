@@ -1,0 +1,22 @@
+#!/bin/bash
+install() {
+	echo sudo pacman -S "$1" # change this depending on your distro
+}
+
+DISPLAY=$(mktemp)
+XINSTALL=$(mktemp)
+
+dialog --radiolist "Welcome to JAB! First, choose your display server.\nYou can use SPACE to check the boxes and ENTER for OK & Cancel." 11 $(tput cols) 2 'Wayland' 'A more modern graphical server that has better support for scaling and multitouch.' on 'X11' 'An older graphical server that does not have great scaling or multitouch support. However, it supports more window managers and has better support for suckless software.' off 2> $DISPLAY
+
+[ $(<"$DISPLAY") = Wayland ] && \
+	(clear ; dialog --infobox 'Installing Wayland...' 4 40 ; install wayland ; \
+	dialog --infobox 'Installing dwl. This is a fast and lightweight window manager that is based on dwm, the X11 version.' 8 40; install dwl)
+
+[ $(<"$DISPLAY") = X11 ] && \
+	(clear ; dialog --infobox 'Installing Xorg...' 4 40 ; install xorg ; \
+	dialog --infobox 'Installing dwm. This is a fast and lightweight window manager by suckless.' 8 40; install dwm ; \
+	dialog --infobox 'Installing st, which stands for simple terminal.')
+
+dialog --no-label "No, stay in tty" --yesno "The installation of your window manager and terminal is complete. Continue setup in the window manager?" 8 60 2> $XINSTALL
+
+[ $? = 0 ] && dwl || startx
