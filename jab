@@ -16,7 +16,7 @@ dialog --radiolist "Welcome to JAB! First, choose your display server.\nYou can 
 	(clear ; dialog --infobox 'Installing xorg-server...' 4 40 ; install xorg-server ; \
 	dialog --infobox 'Installing xorg-xinit...' 4 40 ; install xorg-xinit; \
 	dialog --infobox 'Installing dwm, a fast, lightweight, and extensible window manager by suckless...' 8 40; install dwm ; \
-	dialog --infobox 'Installing st, a "simple terminal" also made by suckless.')
+	dialog --infobox 'Installing st, a "simple terminal" also made by suckless...' 8 40, install st)
 
 dialog --no-label "No, stay in tty" --yesno "The installation of your window manager and terminal is complete. Continue setup in the window manager?" 8 60 2> $XINSTALL
 
