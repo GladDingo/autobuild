@@ -3,8 +3,26 @@ install() {
 	pacman -S --noconfirm --needed "$1" # change this depending on your distro. Make sure that confirmation is not required!
 }
 
+gitmakeinstall() {
+	progname="${1##*/}"
+	progname="${progname%.git}"
+	dir="$repodir/$progname"
+	whiptail --title "LARBS Installation" \
+		--infobox "Installing \`$progname\` ($n of $total) via \`git\` and \`make\`. $(basename "$1") $2" 8 70
+	sudo -u "$name" git -C "$repodir" clone --depth 1 --single-branch \
+		--no-tags -q "$1" "$dir" ||
+		{
+			cd "$dir" || return 1
+			sudo -u "$name" git pull --force origin master
+		}
+	cd "$dir" || exit 1
+	make >/dev/null 2>&1
+	make install >/dev/null 2>&1
+	cd /tmp || return 1
+}
+
 DISPLAY=$(mktemp)
-XINSTALL=$(mktemp)
+WMINSTALL=$(mktemp)
 
 dialog --radiolist "Welcome to JAB! First, choose your display server.\nYou can use SPACE to check the boxes and ENTER for OK & Cancel." 11 $(tput cols) 2 'Wayland' 'A more modern graphical server that has better support for scaling and multitouch.' on 'X11' 'An older graphical server that does not have great scaling or multitouch support. However, it supports more window managers and has better support for suckless software.' off 2> $DISPLAY
 
@@ -18,6 +36,6 @@ dialog --radiolist "Welcome to JAB! First, choose your display server.\nYou can 
 	dialog --infobox 'Installing dwm, a fast, lightweight, and extensible window manager by suckless...' 8 40; install dwm ; \
 	dialog --infobox 'Installing st, a "simple terminal" also made by suckless...' 8 40, install st)
 
-dialog --no-label "No, stay in tty" --yesno "The installation of your window manager and terminal is complete. Continue setup in the window manager?" 8 60 2> $XINSTALL
+dialog --no-label "No, stay in tty" --yesno "The installation of your window manager and terminal is complete. Continue setup in the window manager?" 8 60 2> $WMINSTALL
 
 [ $? = 0 ] && dwl || startx
